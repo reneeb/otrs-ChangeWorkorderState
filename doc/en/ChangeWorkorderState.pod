@@ -4,12 +4,19 @@ ChangeWorkorderState
 
 =head1 DESCRIPTION
 
-This addon 
+This addon adds a cronjob that checks if the planned end time of a workorder has passed. If
+so, the workorder state is set to I<delayed>. If the delayed workorder is the "last" workorder
+of a change, the change state is set to I<delayed>.
+
+You can also set an "available time / effor ratio". If you have set a planned effort of 5 hours
+and there are already 3 hours accounted, there are 2 hours left. If the planned end time of the
+workorder is in 2.5 hours and you configured a ration of 60%, the workorder state will be set
+to I<delayed>.
 
 =head1 ACKNOWLEDGEMENT
 
 The development of this addon was sponsored by
-L<>
+L<http://www.hefter-maschinenbau.de>.
 
 =head1 SOURCECODE AND BUGTRACKER
 
