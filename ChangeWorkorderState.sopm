@@ -2,9 +2,9 @@
 <otrs_package version="1.0">
     <!-- GENERATED WITH OTRS::OPM::Maker::Command::sopm (1.33) -->
     <Name>ChangeWorkorderState</Name>
-    <Version>4.0.2</Version>
-    <Framework>4.0.x</Framework>
-    <PackageRequired Version="4.0.1">ITSMChangeManagement</PackageRequired>
+    <Version>3.3.1</Version>
+    <Framework>3.3.x</Framework>
+    <PackageRequired Version="2.9.1">ITSMChangeManagement</PackageRequired>
     <Vendor>Perl-Services.de</Vendor>
     <URL>http://www.perl-services.de</URL>
     <Description Lang="de">Status der Workorder auf Basis ihres geplanten Endes und Status des Changes auf Basis der 'letzten' Workorder ändern.</Description>

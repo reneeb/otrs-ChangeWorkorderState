@@ -3,16 +3,9 @@ package Kernel::System::ITSMChange::ChangeWorkorderState;
 use strict;
 use warnings;
 
-our @ObjectDependencies = qw(
-    Kernel::Config
-    Kernel::System::DB
-    Kernel::System::Log
-    Kernel::System::Main
-    Kernel::System::Time
-    Kernel::System::GeneralCatalog
-    Kernel::System::ITSMChange
-    Kernel::System::ITSMChange::ITSMWorkOrder
-);
+use Kernel::System::GeneralCatalog;
+use Kernel::System::ITSMChange;
+use Kernel::System::ITSMChange::ITSMWorkOrder;
 
 =item new()
 
@@ -22,6 +15,14 @@ sub new {
     my ($Class, %Param) = @_;
 
     my $Self = bless {}, $Class;
+
+    for my $Object (qw(DBObject ConfigObject MainObject LogObject EncodeObject TimeObject)) {
+        $Self->{$Object} = $Param{$Object} || die "Got no $Object!";
+    }
+
+    $Self->{GeneralCatalogObject} = Kernel::System::GeneralCatalog->new( %{$Self} );
+    $Self->{ChangeObject}         = Kernel::System::ITSMChange->new( %{$Self} );
+    $Self->{WorkorderObject}      = Kernel::System::ITSMChange::ITSMWorkOrder->new( %{$Self} );
 
     return $Self;
 }
@@ -33,10 +34,10 @@ sub new {
 sub WorkorderStateChange {
     my ($Self, %Param) = @_;
 
-    my $LogObject       = $Kernel::OM->Get('Kernel::System::Log');
-    my $ConfigObject    = $Kernel::OM->Get('Kernel::Config');
-    my $ChangeObject    = $Kernel::OM->Get('Kernel::System::ITSMChange');
-    my $WorkorderObject = $Kernel::OM->Get('Kernel::System::ITSMChange::ITSMWorkOrder');
+    my $LogObject       = $Self->{LogObject};
+    my $ConfigObject    = $Self->{ConfigObject};
+    my $ChangeObject    = $Self->{ChangeObject};
+    my $WorkorderObject = $Self->{WorkorderObject};
 
     for my $Needed ( qw/UserID/ ) {
         if ( !$Param{$Needed} ) {
@@ -98,12 +99,14 @@ Each element in this list is a hash reference that looks like
 sub DelayedWorkordersGet {
     my ($Self, %Param) = @_;
 
-    my $LogObject            = $Kernel::OM->Get('Kernel::System::Log');
-    my $MainObject           = $Kernel::OM->Get('Kernel::System::Main');
-    my $ConfigObject         = $Kernel::OM->Get('Kernel::Config');
-    my $DBObject             = $Kernel::OM->Get('Kernel::System::DB');
-    my $TimeObject           = $Kernel::OM->Get('Kernel::System::Time');
-    my $GeneralCatalogObject = $Kernel::OM->Get('Kernel::System::GeneralCatalog');
+    my $LogObject            = $Self->{LogObject};
+    my $MainObject           = $Self->{MainObject};
+    my $DBObject             = $Self->{DBObject};
+    my $ConfigObject         = $Self->{ConfigObject};
+    my $ChangeObject         = $Self->{ChangeObject};
+    my $WorkorderObject      = $Self->{WorkorderObject};
+    my $TimeObject           = $Self->{TimeObject};
+    my $GeneralCatalogObject = $Self->{GeneralCatalogObject};
 
     my $DEBUG = $ConfigObject->Get('ChangeWorkorderState::Debug');
 

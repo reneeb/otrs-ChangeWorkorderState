@@ -30,16 +30,29 @@ use lib dirname($RealBin) . '/Custom';
 
 use Getopt::Long;
 
-use Kernel::System::ObjectManager;
+use Kernel::Config;
+use Kernel::System::Encode;
+use Kernel::System::Time;
+use Kernel::System::Log;
+use Kernel::System::Main;
+use Kernel::System::DB;
+use Kernel::System::User;
+use Kernel::System::ITSMChange::ChangeWorkorderState;
 
-# create object manager
-local $Kernel::OM = Kernel::System::ObjectManager->new(
-    'Kernel::System::Log' => {
-        LogPrefix => 'OTRS-ps.ChangeWorkorderState.pl',
-    },
+# common objects
+my %CommonObject;
+$CommonObject{ConfigObject} = Kernel::Config->new();
+$CommonObject{EncodeObject} = Kernel::System::Encode->new(%CommonObject);
+$CommonObject{LogObject}    = Kernel::System::Log->new(
+    LogPrefix => 'OTRS-ps.ChangeWorkorderState.pl',
+    %CommonObject,
 );
+$CommonObject{MainObject}        = Kernel::System::Main->new(%CommonObject);
+$CommonObject{TimeObject}        = Kernel::System::Time->new(%CommonObject);
+$CommonObject{DBObject}          = Kernel::System::DB->new(%CommonObject);
+$CommonObject{UserObject}        = Kernel::System::User->new(%CommonObject);
+$CommonObject{ChangeStateObject} = Kernel::System::ITSMChange::ChangeWorkorderState->new(%CommonObject);
 
-my $Object = $Kernel::OM->Get('Kernel::System::ITSMChange::ChangeWorkorderState');
-$Object->WorkorderStateChange( UserID => 1 );
+$CommonObject{ChangeStateObject}->WorkorderStateChange( UserID => 1 );
 
 exit;
