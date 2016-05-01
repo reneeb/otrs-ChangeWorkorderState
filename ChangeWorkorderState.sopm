@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<otrs_package version="1.0">
+    <!-- GENERATED WITH OTRS::OPM::Maker::Command::sopm (1.33) -->
+    <Name>ChangeWorkorderState</Name>
+    <Version>5.0.1</Version>
+    <Framework>5.0.x</Framework>
+    <PackageRequired Version="5.0.1">ITSMChangeManagement</PackageRequired>
+    <Vendor>Perl-Services.de</Vendor>
+    <URL>http://www.perl-services.de</URL>
+    <Description Lang="de">Status der Workorder auf Basis ihres geplanten Endes und Status des Changes auf Basis der 'letzten' Workorder ändern.</Description>
+    <Description Lang="en">change state of workorders based on their planned end time and change state of the change based on the 'last' workorder.</Description>
+    <License>GNU AFFERO GENERAL PUBLIC LICENSE Version 3, November 2007</License>
+    <Filelist>
+        <File Permission="644" Location="Custom/Kernel/System/ITSMChange/ChangeWorkorderState.pm" />
+        <File Permission="644" Location="Kernel/Config/Files/ChangeWorkorderState.xml" />
+        <File Permission="644" Location="Kernel/System/Console/Command/Maint/ITSMChange/ChangeWorkorderState.pm" />
+        <File Permission="644" Location="doc/ChangeWorkorderState.json" />
+        <File Permission="644" Location="doc/en/ChangeWorkorderState.pod" />
+        <File Permission="644" Location="var/cron/change_workorder_state.dist" />
+    </Filelist>
+</otrs_package>
