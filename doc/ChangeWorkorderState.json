@@ -1,0 +1,21 @@
+{
+    "name": "ChangeWorkorderState",
+    "version": "4.0.1",
+    "framework": [
+        "4.0.x"
+    ],
+    "vendor": {
+        "name":  "Perl-Services.de",
+        "url": "http://www.perl-services.de"
+    },
+    "license": "GNU AFFERO GENERAL PUBLIC LICENSE Version 3, November 2007",
+    "description" : {
+        "en": "change state of workorders based on their planned end time and change state of the change based on the 'last' workorder.",
+        "de": "Status der Workorder auf Basis ihres geplanten Endes und Status des Changes auf Basis der 'letzten' Workorder ändern."
+    },
+    "requires" : {
+        "package" : {
+            "ITSMChangeManagement" : "4.0.1"
+        }
+    }
+}

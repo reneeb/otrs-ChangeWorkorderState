@@ -1,0 +1,12 @@
+# --
+# cron/change_workorder_state
+# Copyright (C) 2016 Perl-Services.de, http://perl-services.de
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+# check out-of-office times three times a day
+*/10 * * * *    $HOME/bin/ps.ChangeWorkorderState.pl >> /dev/null
+
