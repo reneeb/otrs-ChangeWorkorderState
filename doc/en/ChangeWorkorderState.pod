@@ -13,6 +13,8 @@ and there are already 3 hours accounted, there are 2 hours left. If the planned 
 workorder is in 2.5 hours and you configured a ration of 60%, the workorder state will be set
 to I<delayed>.
 
+After installation you have to activate the cronjob that checks the workorders...
+
 =head1 ACKNOWLEDGEMENT
 
 The development of this addon was sponsored by
