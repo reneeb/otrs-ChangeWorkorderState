@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use Kernel::System::GeneralCatalog;
+use Kernel::System::Group;
 use Kernel::System::ITSMChange;
 use Kernel::System::ITSMChange::ITSMWorkOrder;
 
@@ -16,10 +17,11 @@ sub new {
 
     my $Self = bless {}, $Class;
 
-    for my $Object (qw(DBObject ConfigObject MainObject LogObject EncodeObject TimeObject)) {
+    for my $Object (qw(DBObject ConfigObject MainObject LogObject EncodeObject TimeObject UserObject)) {
         $Self->{$Object} = $Param{$Object} || die "Got no $Object!";
     }
 
+    $Self->{GroupObject}          = Kernel::System::Group->new( %{$Self} );
     $Self->{GeneralCatalogObject} = Kernel::System::GeneralCatalog->new( %{$Self} );
     $Self->{ChangeObject}         = Kernel::System::ITSMChange->new( %{$Self} );
     $Self->{WorkorderObject}      = Kernel::System::ITSMChange::ITSMWorkOrder->new( %{$Self} );
