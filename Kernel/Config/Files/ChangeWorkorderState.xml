@@ -27,12 +27,20 @@
             <String Regex="">overdue</String>
         </Setting>
     </ConfigItem>
-    <ConfigItem Name="ChangeWorkorderState::WorkorderNewState" Required="0" Valid="0">
+    <ConfigItem Name="ChangeWorkorderState::WorkorderNewStateDelayed" Required="0" Valid="0">
         <Description Translatable="1">New state for Workorder when it is delayed.</Description>
         <Group>ChangeWorkorderState</Group>
         <SubGroup>Core</SubGroup>
         <Setting>
             <String Regex="">delayed</String>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="ChangeWorkorderState::WorkorderNewStateOverdue" Required="0" Valid="0">
+        <Description Translatable="1">New state for Workorder when it is delayed.</Description>
+        <Group>ChangeWorkorderState</Group>
+        <SubGroup>Core</SubGroup>
+        <Setting>
+            <String Regex="">overdue</String>
         </Setting>
     </ConfigItem>
     <ConfigItem Name="ChangeWorkorderState::WorkorderStates" Required="1" Valid="1">
@@ -78,6 +86,52 @@
                 <Item Key="3600" Translatable="1">Hour</Item>
                 <Item Key="86400" Translatable="1">Day</Item>
             </Option>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="Daemon::SchedulerCronTaskManager::Task###ChangeWorkorderState" Required="0" Valid="1">
+        <Description Translatable="1">Change state for delayed workorders.</Description>
+        <Group>Daemon</Group>
+        <SubGroup>Daemon::SchedulerCronTaskManager::Task</SubGroup>
+        <Setting>
+            <Hash>
+                <Item Key="TaskName">Change Workorder States</Item>
+                <Item Key="Schedule">*/10 * * * *</Item> <!-- default: every 10 minutes -->
+                <Item Key="Module">Kernel::System::Console::Command::Maint::ITSMChange::ChangeWorkorderState</Item>
+                <Item Key="Function">Execute</Item>
+                <Item Key="MaximumParallelInstances">1</Item>
+                <Item Key="Params">
+                    <Array>
+                    </Array>
+                </Item>
+            </Hash>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="ITSMWorkOrder::EventModule###05-TriggerChangeStateUpdate" Required="0" Valid="0">
+        <Description Translatable="1">ITSM event module updates the change state based on the workorder state.</Description>
+        <Group>ChangeWorkorderState</Group>
+        <SubGroup>UpdateChangeState</SubGroup>
+        <Setting>
+            <Hash>
+                <Item Key="Module">Kernel::System::ITSMChange::Event::TriggerChangeStateUpdate</Item>
+                <Item Key="Event">(WorkOrderAddPost|WorkOrderUpdatePost)</Item>
+                <Item Key="Transaction">0</Item>
+            </Hash>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="ChangeWorkorderState::TriggerState" Required="0" Valid="0">
+        <Description Translatable="1">Workorders that state is changed to this state trigger a change of the change state.</Description>
+        <Group>ChangeWorkorderState</Group>
+        <SubGroup>UpdateChangeState</SubGroup>
+        <Setting>
+            <String Regex="">delayed</String>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="ChangeWorkorderState::ChangeNewState" Required="0" Valid="0">
+        <Description Translatable="1">New state for Change when Workorder state update triggers an change state update.</Description>
+        <Group>ChangeWorkorderState</Group>
+        <SubGroup>UpdateChangeState</SubGroup>
+        <Setting>
+            <String Regex="">delayed</String>
         </Setting>
     </ConfigItem>
 </otrs_config>
