@@ -53,6 +53,7 @@
                 <Item>created</Item>
                 <Item>in progress</Item>
                 <Item>ready</Item>
+                <Item>delayed</Item>
             </Array>
         </Setting>
     </ConfigItem>
