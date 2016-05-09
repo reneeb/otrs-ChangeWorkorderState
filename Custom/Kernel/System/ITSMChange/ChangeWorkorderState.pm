@@ -50,15 +50,21 @@ sub WorkorderStateChange {
         }
     }
 
-    my $ChangeNewStateOverdue = $ConfigObject->Get('ChangeWorkorderState::ChangeNewStateOverdue');
-    my $ChangeNewStateDelayed = $ConfigObject->Get('ChangeWorkorderState::ChangeNewStateDelayed');
-    my $WorkorderNewState     = $ConfigObject->Get('ChangeWorkorderState::WorkorderNewState') || 'delayed';
+    my $ChangeNewStateOverdue    = $ConfigObject->Get('ChangeWorkorderState::ChangeNewStateOverdue');
+    my $ChangeNewStateDelayed    = $ConfigObject->Get('ChangeWorkorderState::ChangeNewStateDelayed');
+    my $WorkorderNewStateDelayed = $ConfigObject->Get('ChangeWorkorderStateDelayed::WorkorderNewStateDelayed') || 'delayed';
+    my $WorkorderNewStateOverdue = $ConfigObject->Get('ChangeWorkorderStateOverdue::WorkorderNewStateOverdue') || 'overdue';
 
     my @Workorders = $Self->DelayedWorkordersGet();
     for my $Workorder ( @Workorders ) {
+        my $State = $WorkorderNewStateDelayed;
+        if ( $Workorder->{IsOverdue} ) {
+            $State = $WorkorderNewStateOverdue;
+        }
+
         $WorkorderObject->WorkOrderUpdate(
             WorkOrderID    => $Workorder->{WorkOrderID},
-            WorkOrderState => $WorkorderNewState,
+            WorkOrderState => $State,
             UserID         => $Param{UserID},
         );
 
@@ -231,10 +237,9 @@ sub DelayedWorkordersGet {
         );
     }
 
+    WORKORDERID:
     for my $WorkorderID ( keys %Workorders ) {
         my $Workorder = $Workorders{$WorkorderID};
-
-        my $IsDelayed = 0;
 
         my $CurrentTime    = $TimeObject->SystemTime();
         my $PlannedEndTime = $TimeObject->TimeStamp2SystemTime( String => $Workorder->{PlannedEndTime} );
@@ -246,20 +251,23 @@ sub DelayedWorkordersGet {
             );
         }
 
-        if ( $CalcType eq 'PlannedEndTime' ) {
-            $IsDelayed++ if $CurrentTime >= $PlannedEndTime;
+        my $IsDelayed = 0;
+        my $IsOverdue = 0;
+
+        if ( $CurrentTime >= $PlannedEndTime ) {
+            $IsDelayed++;
+            $IsOverdue++;
         }
-        elsif ( $CalcType eq 'Ratio' ) {
-            my $AvailableTime = $PlannedEndTime - $CurrentTime;
 
-            my $GivenRatio = (
-                ( ( $Workorder->{PlannedEffort} - $Workorder->{AccountedTime} ) * $TimeUnit )/
-                $AvailableTime
-            ) * 100;
+        my $AvailableTime = $PlannedEndTime - $CurrentTime;
 
-            $IsDelayed++ if $GivenRatio <= 0;
-            $IsDelayed++ if $GivenRatio >= $TargetRatio;
-            $IsDelayed++ if $CurrentTime >= $PlannedEndTime;
+        my $GivenRatio = (
+            ( ( $Workorder->{PlannedEffort} - $Workorder->{AccountedTime} ) * $TimeUnit )/
+            $AvailableTime
+        ) * 100;
+
+        if ( $GivenRatio <= 0 || $GivenRation >= $TargetRatio )
+            $IsDelayed++;
 
             if ( $DEBUG ) {
                 $LogObject->Log(
@@ -280,7 +288,11 @@ sub DelayedWorkordersGet {
 
         if ( !$IsDelayed ) {
             delete $Workorders{$WorkorderID};
+            next WORKORDERID;
         }
+
+        $Workorders{$WorkorderID}->{IsDelayed} = 1;
+        $Workorders{$WorkorderID}->{IsOverdue} = $IsOverdue;
     }
 
     return values %Workorders;
