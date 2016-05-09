@@ -47,8 +47,9 @@ sub WorkorderStateChange {
         }
     }
 
-    my $ChangeNewState    = $ConfigObject->Get('ChangeWorkorderState::ChangeNewState');
-    my $WorkorderNewState = $ConfigObject->Get('ChangeWorkorderState::WorkorderNewState') || 'delayed';
+    my $ChangeNewStateOverdue = $ConfigObject->Get('ChangeWorkorderState::ChangeNewStateOverdue');
+    my $ChangeNewStateDelayed = $ConfigObject->Get('ChangeWorkorderState::ChangeNewStateDelayed');
+    my $WorkorderNewState     = $ConfigObject->Get('ChangeWorkorderState::WorkorderNewState') || 'delayed';
 
     my @Workorders = $Self->DelayedWorkordersGet();
     for my $Workorder ( @Workorders ) {
@@ -58,10 +59,18 @@ sub WorkorderStateChange {
             UserID         => $Param{UserID},
         );
 
-        if ( $Workorder->{IsLastWorkorder} && $ChangeNewState ) {
+        if ( $ChangeNewStateDelayed ) {
             $ChangeObject->ChangeUpdate(
                 ChangeID    => $Workorder->{ChangeID},
-                ChangeState => $ChangeNewState,
+                ChangeState => $ChangeNewStateDelayed,
+                UserID      => $Param{UserID},
+            );
+        }
+
+        if ( $Workorder->{IsLastWorkorder} && $ChangeNewStateOverdue ) {
+            $ChangeObject->ChangeUpdate(
+                ChangeID    => $Workorder->{ChangeID},
+                ChangeState => $ChangeNewStateOverdue,
                 UserID      => $Param{UserID},
             );
         }

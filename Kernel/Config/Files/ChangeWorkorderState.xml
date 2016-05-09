@@ -11,12 +11,20 @@
             </Option>
         </Setting>
     </ConfigItem>
-    <ConfigItem Name="ChangeWorkorderState::ChangeNewState" Required="0" Valid="0">
-        <Description Translatable="1">New state for Change when "last" Workorder is changed.</Description>
+    <ConfigItem Name="ChangeWorkorderState::ChangeNewStateDelayed" Required="0" Valid="0">
+        <Description Translatable="1">New state for Change when "any" Workorder is delayed.</Description>
         <Group>ChangeWorkorderState</Group>
         <SubGroup>Core</SubGroup>
         <Setting>
             <String Regex="">delayed</String>
+        </Setting>
+    </ConfigItem>
+    <ConfigItem Name="ChangeWorkorderState::ChangeNewStateOverdue" Required="0" Valid="0">
+        <Description Translatable="1">New state for Change when "last" Workorder is delayed.</Description>
+        <Group>ChangeWorkorderState</Group>
+        <SubGroup>Core</SubGroup>
+        <Setting>
+            <String Regex="">overdue</String>
         </Setting>
     </ConfigItem>
     <ConfigItem Name="ChangeWorkorderState::WorkorderNewState" Required="0" Valid="0">
