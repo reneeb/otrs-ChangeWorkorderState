@@ -2,7 +2,7 @@
 <otrs_package version="1.0">
     <!-- GENERATED WITH OTRS::OPM::Maker::Command::sopm (1.33) -->
     <Name>ChangeWorkorderState</Name>
-    <Version>3.3.2</Version>
+    <Version>3.3.3</Version>
     <Framework>3.3.x</Framework>
     <PackageRequired Version="2.9.1">ITSMChangeManagement</PackageRequired>
     <Vendor>Perl-Services.de</Vendor>
