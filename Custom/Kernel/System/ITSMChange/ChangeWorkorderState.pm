@@ -76,7 +76,7 @@ sub WorkorderStateChange {
             );
         }
 
-        if ( $Workorder->{IsLastWorkorder} && $ChangeNewStateOverdue ) {
+        if ( $Workorder->{IsLastWorkorder} && $Workorder->{IsOverdue} && $ChangeNewStateOverdue ) {
             $ChangeObject->ChangeUpdate(
                 ChangeID    => $Workorder->{ChangeID},
                 ChangeState => $ChangeNewStateOverdue,
@@ -192,6 +192,13 @@ sub DelayedWorkordersGet {
     my %Workorders;
 
     while ( my @Row = $DBObject->FetchrowArray() ) {
+        if ( $DEBUG ) {
+            $LogObject->Log(
+                Priority => 'debug',
+                Message  => $MainObject->Dump( \@Row ),
+            );
+        }
+
         $Workorders{ $Row[0] } = {
             WorkOrderID     => $Row[0],
             ChangeID        => $Row[1],
@@ -200,6 +207,8 @@ sub DelayedWorkordersGet {
             AccountedTime   => $Row[4],
             PlannedEndTime  => $Row[2],
         };
+
+        $LastWorkorderPerChange{ $Row[1] } = $Row[0];
     }
 
     if ( $DEBUG ) {
@@ -266,7 +275,7 @@ sub DelayedWorkordersGet {
             $AvailableTime
         ) * 100;
 
-        if ( $GivenRatio <= 0 || $GivenRation >= $TargetRatio )
+        if ( $GivenRatio < 0 || $GivenRatio >= $TargetRatio ) {
             $IsDelayed++;
 
             if ( $DEBUG ) {
@@ -282,7 +291,7 @@ sub DelayedWorkordersGet {
         if ( $DEBUG ) {
             $LogObject->Log(
                 Priority => 'debug',
-                Message  => "IsDelayed: $IsDelayed",
+                Message  => "IsDelayed: $IsDelayed // IsOverdue: $IsOverdue",
             );
         }
 
