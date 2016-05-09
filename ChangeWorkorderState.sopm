@@ -2,7 +2,7 @@
 <otrs_package version="1.0">
     <!-- GENERATED WITH OTRS::OPM::Maker::Command::sopm (1.33) -->
     <Name>ChangeWorkorderState</Name>
-    <Version>3.3.3</Version>
+    <Version>3.3.4</Version>
     <Framework>3.3.x</Framework>
     <PackageRequired Version="2.9.1">ITSMChangeManagement</PackageRequired>
     <Vendor>Perl-Services.de</Vendor>
@@ -12,6 +12,7 @@
     <License>GNU AFFERO GENERAL PUBLIC LICENSE Version 3, November 2007</License>
     <Filelist>
         <File Permission="644" Location="Custom/Kernel/System/ITSMChange/ChangeWorkorderState.pm" />
+        <File Permission="644" Location="Custom/Kernel/System/ITSMChange/Event/TriggerChangeStateUpdate.pm" />
         <File Permission="644" Location="Kernel/Config/Files/ChangeWorkorderState.xml" />
         <File Permission="755" Location="bin/ps.ChangeWorkorderState.pl" />
         <File Permission="644" Location="doc/ChangeWorkorderState.json" />
