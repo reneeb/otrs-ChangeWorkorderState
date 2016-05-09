@@ -1,0 +1,42 @@
+=encoding utf-8
+
+=head1 NÉV
+
+ChangeWorkorderState - A munkamegrendelések állapotának megváltoztatása a tervezett befejezési
+idejük alapján, és a változás állapotának megváltoztatása az „utolsó” munkamegrendelés alapján.
+
+=head1 LEÍRÁS
+
+Ez a kiegészítő egy cron-feladatot ad hozzá, amely azt ellenőrzi, hogy egy munkamegrendelés
+tervezett befejezési ideje elmúlt-e. Ha igen, akkor a munkamegrendelés I<késés> állapotra lesz
+állítva. Ha a késedelmes munkamegrendelés a változás „utolsó” munkamegrendelése, akkor a változás
+is I<késés> állapotra lesz állítva.
+
+Beállíthat egy „elérhető idő / ráfordítás arányt” is. Ha 5 óra tervezett ráfordítás van beállítva,
+és már 3 óra el lett számolva, akkor 2 óra van hátra. Ha a munkamegrendelés a tervezett befejezési
+idejét 2,5 óra múlva érné el, és 60%-os arányt állított be, akkor a munkamegrendelés I<késés>
+állapota lesz állítva.
+
+Telepítés után be kell kapcsolnia azt a cron-feladatot, amely ellenőrzi a munkamegrendeléseket.
+
+=head1 KÖSZÖNETNYILVÁNÍTÁS
+
+Ennek a kiegészítőnek a fejlesztését a L<http://www.hefter-maschinenbau.de> támogatta.
+
+=head1 FORRÁSKÓD ÉS HIBAKÖVETŐ
+
+A kódtároló és a hibakövető a L<http://github.com/reneeb/otrs-ChangeWorkorderState> címen érhető
+el. Kérjük, hogy a hibákat és a funkciókéréseket a GitHub-on vagy e-mailben jelentse.
+
+=head1 SZERZŐ ÉS LICENC
+
+A csomag szerzője: Renée Bäcker E<lt>otrs@perl-services.deE<gt>.
+
+A csomag AGPL alatt licencelt. Ha nem kapta meg ezt a fájlt, akkor nézze meg a
+L<http://www.gnu.org/licenses/agpl.txt> oldalon.
+
+=head1 MAGYAR FORDÍTÁS
+
+A magyar fordítást az OTRS-megoldások csapata készítette.
+Copyright (C) 2016 Úr Balázs, L<http://otrs-megoldasok.hu>
+

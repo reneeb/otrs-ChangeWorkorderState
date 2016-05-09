@@ -1,6 +1,6 @@
 {
     "name": "ChangeWorkorderState",
-    "version": "5.0.3",
+    "version": "5.0.4",
     "framework": [
         "5.0.x"
     ],
@@ -10,8 +10,9 @@
     },
     "license": "GNU AFFERO GENERAL PUBLIC LICENSE Version 3, November 2007",
     "description" : {
-        "en": "change state of workorders based on their planned end time and change state of the change based on the 'last' workorder.",
-        "de": "Status der Workorder auf Basis ihres geplanten Endes und Status des Changes auf Basis der 'letzten' Workorder ändern."
+        "en": "Change state of workorders based on their planned end time and change state of the change based on the 'last' workorder.",
+        "de": "Status der Workorder auf Basis ihres geplanten Endes und Status des Changes auf Basis der 'letzten' Workorder ändern.",
+        "hu": "A munkamegrendelések állapotának megváltoztatása a tervezett befejezési idejük alapján, és a változás állapotának megváltoztatása az „utolsó” munkamegrendelés alapján."
     },
     "requires" : {
         "package" : {

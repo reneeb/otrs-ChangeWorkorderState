@@ -1,6 +1,9 @@
+=encoding utf-8
+
 =head1 NAME
 
-ChangeWorkorderState
+ChangeWorkorderState - Change state of workorders based on their planned end time and change
+state of the change based on the 'last' workorder.
 
 =head1 DESCRIPTION
 
@@ -8,28 +11,28 @@ This addon adds a cronjob that checks if the planned end time of a workorder has
 so, the workorder state is set to I<delayed>. If the delayed workorder is the "last" workorder
 of a change, the change state is set to I<delayed>.
 
-You can also set an "available time / effor ratio". If you have set a planned effort of 5 hours
+You can also set an "available time / effort ratio". If you have set a planned effort of 5 hours
 and there are already 3 hours accounted, there are 2 hours left. If the planned end time of the
-workorder is in 2.5 hours and you configured a ration of 60%, the workorder state will be set
+workorder is in 2.5 hours and you configured a ratio of 60%, the workorder state will be set
 to I<delayed>.
 
-After installation you have to activate the cronjob that checks the workorders...
+After installation you have to activate the cronjob that checks the workorders.
 
 =head1 ACKNOWLEDGEMENT
 
-The development of this addon was sponsored by
-L<http://www.hefter-maschinenbau.de>.
+The development of this addon was sponsored by L<http://www.hefter-maschinenbau.de>.
 
-=head1 SOURCECODE AND BUGTRACKER
+Hungarian translation by Balázs Úr, L<http://www.otrs-megoldasok.hu>.
+
+=head1 SOURCE CODE AND BUGTRACKER
 
 The code repository and a bugtracker is available at L<http://github.com/reneeb/otrs-ChangeWorkorderState>.
-Please report any bugs and feature requests on github or via mail.
+Please report any bugs and feature requests on GitHub or via mail.
 
 =head1 AUTHOR AND LICENSE
 
-This package was written by Renee Baecker E<lt>otrs@perl-services.deE<gt>.
+This package was written by Renée Bäcker E<lt>otrs@perl-services.deE<gt>.
 
 The package is licensed unter AGPL. If you
 did not receive this file, see L<http://www.gnu.org/licenses/agpl.txt>.
-
 
