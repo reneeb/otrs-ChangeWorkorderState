@@ -12,12 +12,8 @@ package Kernel::System::ITSMChange::Event::TriggerChangeStateUpdate;
 use strict;
 use warnings;
 
-our @ObjectDependencies = qw(
-    Kernel::System::ITSMChange
-    Kernel::System::ITSMChange::ITSMWorkOrder
-    Kernel::System::Log
-    Kernel::Config
-);
+use Kernel::System::ITSMChange;
+use Kernel::System::ITSMChange::ITSMWorkOrder;
 
 sub new {
     my ( $Type, %Param ) = @_;
@@ -25,6 +21,13 @@ sub new {
     # allocate new hash for object
     my $Self = {};
     bless( $Self, $Type );
+    
+    for my $Object (qw(DBObject ConfigObject MainObject LogObject EncodeObject TimeObject)) {
+        $Self->{$Object} = $Param{$Object} || die "Got no $Object!";
+    }
+
+    $Self->{ChangeObject}         = Kernel::System::ITSMChange->new( %{$Self} );
+    $Self->{WorkorderObject}      = Kernel::System::ITSMChange::ITSMWorkOrder->new( %{$Self} );
 
     return $Self;
 }
@@ -32,10 +35,10 @@ sub new {
 sub Run {
     my ( $Self, %Param ) = @_;
 
-    my $LogObject       = $Kernel::OM->Get('Kernel::System::Log');
-    my $ChangeObject    = $Kernel::OM->Get('Kernel::System::ITSMChange');
-    my $WorkorderObject = $Kernel::OM->Get('Kernel::System::ITSMChange::WorkOrder');
-    my $ConfigObject    = $Kernel::OM->Get('Kernel::Config');
+    my $LogObject       = $Self->{LogObject};
+    my $ChangeObject    = $Self->{ChangeObject};
+    my $WorkorderObject = $Self->{WorkorderObject};
+    my $ConfigObject    = $Self->{ConfigObject};
 
     # check needed stuff
     for my $Needed (qw(Data Event Config UserID)) {
